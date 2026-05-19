@@ -13,7 +13,7 @@ cd ..
 mkdir ~/.config/NaShell
 touch ~/.config/NaShell/config.lua
 # go to command for the code to config.lua
-
+# Make it your shell
 ```
 
 ## Code-Lua
