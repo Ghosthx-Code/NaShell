@@ -17,7 +17,7 @@ touch ~/.config/NaShell/config.lua
 ```
 
 ## Code-Lua
-
+- [ ] Lua Commands
 ```lua
 -- shell:set_prompt() set the prompt like
 shell:set_prompt("&(white)[&(TIME)] &(green)[&(DIR)] &(cyan)> ") -- sets prompt
