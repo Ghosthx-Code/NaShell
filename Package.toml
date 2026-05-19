@@ -1,0 +1,13 @@
+[[binary]]
+name=".binary"
+version="v2.5.0"
+files="shell"
+
+[[rust]]
+name="rust"
+version="v2.5.0"
+file="main.rs"
+folders="lua, command"
+
+[[help]]
+help="Make The Folder ~/.config/NaShell, and the file ~/.config/NaShell/config.lua"

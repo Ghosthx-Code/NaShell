@@ -1,0 +1,10 @@
+pub mod ls;
+pub mod echo;
+pub mod grep;
+pub mod touch;
+pub mod cls;
+pub mod mkdir;
+pub mod cd;
+pub mod cat;
+pub mod whoami;
+pub mod rm;
