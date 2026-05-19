@@ -1,5 +1,5 @@
 # NaShell
-A shell in rust and lua 
+A shell in `rust` and `lua` 
 
 ## Config
 ```bash
