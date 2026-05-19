@@ -27,5 +27,6 @@ shell:help() -- prints all lua code and what it does
 
 shell:alias("nv", "nvim .") -- sets a a command
 
-shell:addr("nv", "nvim") -- type nv and it does nvim  
+shell:addr("nv", "nvim") -- type nv and it does nvim
+
 ```
