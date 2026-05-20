@@ -7,6 +7,7 @@ git clone https://github.com/Ghosthx-Code/NsShell
 cd NaShell
 mv binary/shell .
 sudo mv shell /usr/local/bin/shell
+chsh -s /usr/local/bin/shell
 
 cd ..
 mkdir ~/.config/NaShell
