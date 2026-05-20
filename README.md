@@ -3,7 +3,7 @@ A shell in `rust` and `lua`
 ## Config
 ```bash
 
-git clone https://Ghosthx-Code/NsShell
+git clone https://github.com/Ghosthx-Code/NsShell
 cd NaShell
 mv binary/shell .
 sudo mv shell /usr/local/bin/shell
