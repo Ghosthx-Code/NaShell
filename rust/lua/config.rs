@@ -156,7 +156,14 @@ pub fn init_shell() -> Result<(Lua, ShellConfig), Box<dyn std::error::Error>> {
             .unwrap_or(false);
         Ok(is_git)
     })?;
+    let if_rust = lua.create_function(|_, ()| {
+        // Only return true if we are actually in a Rust project
+        let is_rust_project = Path::new("Cargo.toml").exists();
+        Ok(is_rust_project)
+    })?;
+
     lua.globals().set("if_git", if_git)?;
+    lua.globals().set("if_rust", if_rust)?;
 
     // 3. Load config file
     let home = env::var("HOME").or_else(|_| env::var("USERPROFILE")).unwrap_or_else(|_| ".".into());

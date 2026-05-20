@@ -7,6 +7,8 @@ use rustyline::error::ReadlineError;
 use rustyline::{Config, Editor, Result, ColorMode};
 use rustyline::highlight::{Highlighter, MatchingBracketHighlighter, CmdKind};
 use rustyline::{Helper, Completer, Hinter, Validator};
+use colored::*;
+use regex::Regex;
 
 #[derive(Helper, Completer, Hinter, Validator)]
 struct MyHelper {
@@ -18,7 +20,7 @@ struct MyHelper {
     pub validator: rustyline::validate::MatchingBracketValidator,
     pub highlighter: MatchingBracketHighlighter,
 }
-
+/* 
 impl Highlighter for MyHelper {
     fn highlight<'l>(&self, line: &'l str, _pos: usize) -> Cow<'l, str> {
         if line.is_empty() { return Cow::Borrowed(line); }
@@ -28,7 +30,7 @@ impl Highlighter for MyHelper {
             "sudo", "git", "cargo", "shell", "python", "rustc", "nvim", "apt", "install", "grep", "vim", "code", "mkdir", "nano", "nala", "lsB", "wifi", "rx", "wget", "wc", "yes", "whoami", "||", "&&",
             "cat", "cp", "mv", "rm", "touch", "ln", "find", "locate", "chmod", "chown", "umask", "df", "du", "free", "top", "htop", "btop", "ps", "kill", "pkill", "killall", "nice", "renice", "nohup", "screen", "watch", "head", "tail", "less", "more", "diff", "patch", "sed", "awk", "sort", "uniq", "tee", "xargs", "alias", "unalias", "history", "type", "whereis", "which", "realpath", "basename", "dirname", "tree", "stat", "file", "mount", "umount", "fdisk", "lsblk", "chroot", "dd", "sync", "tar", "gzip", "gunzip", "bzip2", "zip", "unzip", "7z", "zstd", "xz",
             "ping", "curl", "ssh", "scp", "rsync", "sftp", "ftp", "dig", "nslookup", "host", "ip", "ifconfig", "netstat", "ss", "route", "traceroute", "mtr", "nmap", "tcpdump", "ufw", "iptables", "nft", "aria2c", "socat", "nc", "netcat", "telnet", "nmtui", "nmcli", "iw", "iwconfig", "bluetoothctl", "hcitool",
-           "fish", "dash", "ash", "csh", "ksh", "tclsh", "expect", "fzf", "skim", "delta", "dust", "duf", "procs", "bottom", "glances", "gping", "dog", "httpie", "xh", "curlie", "lazydocker", "tig", "lab", "tea", "task", "timew", "ledger", "hledger", "calc", "units", "factor", "base64", "openssl", "gpg", "ssh-keygen", "ssh-copy-id", "shred", "wipe", "srm", "truncate", "fallocate", "ionice", "chrt", "taskset", "lsof", "fuser", "smem", "slabtop", "pcstat", "tiptop", "numastat", "iostat", "mpstat", "sar", "pidstat", "nfsiostat", "cifsiostat", "vmstat", "zpool", "zfs", "btrfs", "lvm", "pvcreate", "vgcreate", "lvcreate", "cryptsetup", "dmsetup", "upadet", "cls", "clear", "cd", "exit", "ls", "SHELL", "line", "echo", "fastfetch", "help"
+           "fish", "dash", "ash", "csh", "ksh", "tclsh", "expect", "fzf", "skim", "delta", "dust", "duf", "procs", "bottom", "glances", "gping", "dog", "httpie", "xh", "curlie", "lazydocker", "tig", "lab", "tea", "task", "timew", "ledger", "hledger", "calc", "units", "factor", "base64", "openssl", "gpg", "ssh-keygen", "ssh-copy-id", "shred", "wipe", "srm", "truncate", "fallocate", "ionice", "chrt", "taskset", "lsof", "fuser", "smem", "slabtop", "pcstat", "tiptop", "numastat", "iostat", "mpstat", "sar", "pidstat", "nfsiostat", "cifsiostat", "vmstat", "zpool", "zfs", "btrfs", "lvm", "pvcreate", "vgcreate", "lvcreate", "cryptsetup", "dmsetup", "upadet", "cls", "clear", "cd", "exit", "ls", "SHELL", "line", "echo", "fastfetch", "help", "tmux"
         ];
 
         // 1. Highlight standard commands from the list (Green)
@@ -48,7 +50,45 @@ impl Highlighter for MyHelper {
 
     fn highlight_char(&self, _line: &str, _pos: usize, _forced: CmdKind) -> bool { true }
 }
+*/
+impl Highlighter for MyHelper {
+    fn highlight<'l>(&self, line: &'l str, _pos: usize) -> Cow<'l, str> {
+        if line.is_empty() { return Cow::Borrowed(line); }
 
+        let keywords = [
+            "sudo", "git", "cargo", "shell", "python", "rustc", "nvim", "apt", "install", "grep", "vim", "code", "mkdir", "nano", "nala", "lsB", "wifi", "rx", "wget", "wc", "yes", "whoami",
+            "cat", "cp", "mv", "rm", "touch", "ln", "find", "locate", "chmod", "chown", "umask", "df", "du", "free", "top", "htop", "btop", "ps", "kill", "pkill", "killall", "nice", "renice", "nohup", "screen", "watch", "head", "tail", "less", "more", "diff", "patch", "sed", "awk", "sort", "uniq", "tee", "xargs", "alias", "unalias", "history", "type", "whereis", "which", "realpath", "basename", "dirname", "tree", "stat", "file", "mount", "umount", "fdisk", "lsblk", "chroot", "dd", "sync", "tar", "gzip", "gunzip", "bzip2", "zip", "unzip", "7z", "zstd", "xz",
+            "ping", "curl", "ssh", "scp", "rsync", "sftp", "ftp", "dig", "nslookup", "host", "ip", "ifconfig", "netstat", "ss", "route", "traceroute", "mtr", "nmap", "tcpdump", "ufw", "iptables", "nft", "aria2c", "socat", "nc", "netcat", "telnet", "nmtui", "nmcli", "iw", "iwconfig", "bluetoothctl", "hcitool",
+            "fish", "dash", "csh", "ksh", "tclsh", "expect", "fzf", "skim", "delta", "dust", "duf", "procs", "bottom", "glances", "gping", "dog", "httpie", "xh", "curlie", "lazydocker", "tig", "lab", "tea", "task", "timew", "ledger", "hledger", "calc", "units", "factor", "base64", "openssl", "gpg", "ssh-keygen", "ssh-copy-id", "shred", "wipe", "srm", "truncate", "fallocate", "ionice", "chrt", "taskset", "lsof", "fuser", "smem", "slabtop", "pcstat", "tiptop", "numastat", "iostat", "mpstat", "sar", "pidstat", "nfsiostat", "cifsiostat", "vmstat", "zpool", "zfs", "btrfs", "lvm", "pvcreate", "vgcreate", "lvcreate", "cryptsetup", "dmsetup", "upadet", "cls", "clear", "cd", "exit", "ls", "SHELL", "line", "echo", "fastfetch", "help", "tmux"
+        ];
+
+        // 1. Split by spaces to evaluate every "chunk" individually
+        let parts: Vec<String> = line.split_inclusive(' ').map(|chunk| {
+            // Trim the space off the end to check the actual word
+            let trimmed = chunk.trim_end();
+            let whitespace = &chunk[trimmed.len()..];
+
+            // Only color if the word is EXACTLY in the list
+            // This prevents .cargo or .config/fish from matching
+            if keywords.contains(&trimmed) || trimmed == "||" || trimmed == "&&" {
+                format!("{}{}", trimmed.bright_green(), whitespace)
+            } else {
+                chunk.to_string()
+            }
+        }).collect();
+
+        let highlighted = parts.join("");
+
+        // 2. String highlighting (White) - apply last
+        if line.contains('"') || line.contains('\'') {
+             return Cow::Owned(highlighted.white().to_string());
+        }
+
+        Cow::Owned(highlighted)
+    }
+
+    fn highlight_char(&self, _line: &str, _pos: usize, _forced: CmdKind) -> bool { true }
+}
 fn handle_source(path: &str) -> std::result::Result<(), String> {
     let content = fs::read_to_string(path).map_err(|e| e.to_string().red().to_string())?;
     for line in content.lines() {
