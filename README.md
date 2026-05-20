@@ -21,8 +21,7 @@ touch ~/.config/NaShell/config.lua
 -- shell:set_prompt() set the prompt like
 shell:set_prompt("&(white)[&(TIME)] &(green)[&(DIR)] &(cyan)> ") -- sets prompt
 
--- to get dir
-shell:help() -- prints all lua code and what it does
+-- &(DIR) to get dir
 
 shell:alias("nv", "nvim .") -- sets a a command
 
