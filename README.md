@@ -21,7 +21,8 @@ touch ~/.config/NaShell/config.lua
 ```lua
 -- shell:set_prompt() set the prompt like
 shell:set_prompt("&(white)[&(TIME)] &(green)[&(DIR)] &(cyan)> ") -- sets prompt
-
+-- if_git() checks if you are in a git dir
+-- if_rust() checks to see if you are in a rust project
 -- &(GIT) to get the git branch
 -- &(DIR) to get dir
 -- &(RUST) to get rust verion
