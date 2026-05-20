@@ -28,8 +28,7 @@ impl Highlighter for MyHelper {
             "sudo", "git", "cargo", "shell", "python", "rustc", "nvim", "apt", "install", "grep", "vim", "code", "mkdir", "nano", "nala", "lsB", "wifi", "rx", "wget", "wc", "yes", "whoami", "||", "&&",
             "cat", "cp", "mv", "rm", "touch", "ln", "find", "locate", "chmod", "chown", "umask", "df", "du", "free", "top", "htop", "btop", "ps", "kill", "pkill", "killall", "nice", "renice", "nohup", "screen", "watch", "head", "tail", "less", "more", "diff", "patch", "sed", "awk", "sort", "uniq", "tee", "xargs", "alias", "unalias", "history", "type", "whereis", "which", "realpath", "basename", "dirname", "tree", "stat", "file", "mount", "umount", "fdisk", "lsblk", "chroot", "dd", "sync", "tar", "gzip", "gunzip", "bzip2", "zip", "unzip", "7z", "zstd", "xz",
             "ping", "curl", "ssh", "scp", "rsync", "sftp", "ftp", "dig", "nslookup", "host", "ip", "ifconfig", "netstat", "ss", "route", "traceroute", "mtr", "nmap", "tcpdump", "ufw", "iptables", "nft", "aria2c", "socat", "nc", "netcat", "telnet", "nmtui", "nmcli", "iw", "iwconfig", "bluetoothctl", "hcitool",
-            "emacs", "neovim", "subl", "micro", "joe", "ex", "view", "bat", "glow", "tldr", "man", "info",
-           "fish", "dash", "ash", "csh", "ksh", "tclsh", "expect", "fzf", "skim", "delta", "dust", "duf", "procs", "bottom", "glances", "gping", "dog", "httpie", "xh", "curlie", "lazygit", "lazydocker", "tig", "gitui", "gh", "lab", "tea", "task", "timew", "ledger", "hledger", "calc", "bc", "units", "factor", "base64", "openssl", "gpg", "ssh-keygen", "ssh-copy-id", "shred", "wipe", "srm", "truncate", "fallocate", "ionice", "chrt", "taskset", "lsof", "fuser", "smem", "slabtop", "pcstat", "tiptop", "numastat", "iostat", "mpstat", "sar", "pidstat", "nfsiostat", "cifsiostat", "vmstat", "zpool", "zfs", "btrfs", "lvm", "pvcreate", "vgcreate", "lvcreate", "cryptsetup", "dmsetup", "upadet", "cls", "clear", "cd", "exit", "ls"
+           "fish", "dash", "ash", "csh", "ksh", "tclsh", "expect", "fzf", "skim", "delta", "dust", "duf", "procs", "bottom", "glances", "gping", "dog", "httpie", "xh", "curlie", "lazydocker", "tig", "lab", "tea", "task", "timew", "ledger", "hledger", "calc", "units", "factor", "base64", "openssl", "gpg", "ssh-keygen", "ssh-copy-id", "shred", "wipe", "srm", "truncate", "fallocate", "ionice", "chrt", "taskset", "lsof", "fuser", "smem", "slabtop", "pcstat", "tiptop", "numastat", "iostat", "mpstat", "sar", "pidstat", "nfsiostat", "cifsiostat", "vmstat", "zpool", "zfs", "btrfs", "lvm", "pvcreate", "vgcreate", "lvcreate", "cryptsetup", "dmsetup", "upadet", "cls", "clear", "cd", "exit", "ls", "SHELL", "line", "echo", "fastfetch", "help"
         ];
 
         // 1. Highlight standard commands from the list (Green)
@@ -80,9 +79,11 @@ fn main() -> Result<()> {
     }));
 
     loop {
-        let shell_cfg = lua::config::init_shell().unwrap_or_else(|_| {
-            lua::config::ShellConfig::default()
+        // Replace your failing line with this:
+        let (lua, mut shell_cfg)  = lua::config::init_shell().unwrap_or_else(|_| {
+            (mlua::Lua::new(), lua::config::ShellConfig::default())
         });
+
 
         let display_prompt = lua::config::parse_prompt(&shell_cfg.raw_prompt_template);
 
@@ -124,6 +125,10 @@ fn main() -> Result<()> {
                         println!("NaShell:\t\t\t\t\t/usr/local/bin/shell");
                         Ok(())
                     },
+                    "line" => {
+                        command::line::line();
+                        Ok(())
+                    }
                     _ => {
                         let final_input = if raw_cmd != resolved_cmd {
                             input.replacen(raw_cmd, resolved_cmd, 1)

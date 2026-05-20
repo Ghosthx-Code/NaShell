@@ -8,3 +8,4 @@ pub mod cd;
 pub mod cat;
 pub mod whoami;
 pub mod rm;
+pub mod line;
