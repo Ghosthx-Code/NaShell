@@ -28,7 +28,6 @@ shell:set_prompt("&(white)[&(TIME)] &(green)[&(DIR)] &(cyan)> ") -- sets prompt
 -- &(HOST) to get local ip
 -- &(USER) to get user name
 -- &(SYSTEM) to get cpu and memory usage
--- &
 shell:alias("nv", "nvim .") -- sets a a command
 
 shell:addr("nv", "nvim") -- type nv and it does nvim
