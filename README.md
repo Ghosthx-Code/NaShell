@@ -21,8 +21,14 @@ touch ~/.config/NaShell/config.lua
 -- shell:set_prompt() set the prompt like
 shell:set_prompt("&(white)[&(TIME)] &(green)[&(DIR)] &(cyan)> ") -- sets prompt
 
+-- &(GIT) to get the git branch
 -- &(DIR) to get dir
-
+-- &(RUST) to get rust verion
+-- &(TIME) to get time
+-- &(HOST) to get local ip
+-- &(USER) to get user name
+-- &(SYSTEM) to get cpu and memory usage
+-- &
 shell:alias("nv", "nvim .") -- sets a a command
 
 shell:addr("nv", "nvim") -- type nv and it does nvim
